@@ -33,4 +33,14 @@ public class WealTennisTest {
 
         assertThat(score).isEqualTo("Fifteen Love");
     }
+
+    @Test
+    public void should_return_30_0_when_player1_score_twice() {
+        WealTennis wealTennis = new WealTennis();
+        wealTennis.scorePlayer1();
+        wealTennis.scorePlayer1();
+        String score = wealTennis.score();
+
+        assertThat(score).isEqualTo("Thirty Love");
+    }
 }
