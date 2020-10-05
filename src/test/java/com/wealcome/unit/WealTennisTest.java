@@ -1,46 +1,83 @@
 package com.wealcome.unit;
 
 import com.wealcome.WealTennis;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class WealTennisTest {
 
-    // 0   15    30     40   Win
-    // 40 - 40 =>   0   15   30  40 Advantage Win
-
-    // 0 0   Love All
-    // 15 0    Fifteen Love
-    // 15 15    Fifteen All
-    // 30 15    Thirty Fifteen
-    // 40 15    Forty Fifteen
-    // Won
-
+    private WealTennis wealTennis = new WealTennis();
 
     @Test
     void startTheGameWithDefaultScore() {
-        assertThat(new WealTennis().score()).isEqualTo("Love All");
+        assertScore(() -> {
+        }, "Love All");
     }
 
+    @Nested
+    class OnePlayerMakesBlankGame {
 
+        @Test
+        void shouldReportTheGameScore() {
+            assertScore(() -> hitP1(1), "Fifteen Love");
+            assertScore(() -> hitP1(2), "Thirty Love");
+            assertScore(() -> hitP1(3), "Forty Love");
+            assertScore(() -> hitP1(4), "Won!");
+        }
 
-    @Test
-    public void should_return_15_0_when_player1_score_once() {
-        WealTennis wealTennis = new WealTennis();
-        wealTennis.scorePlayer1();
-        String score = wealTennis.score();
-
-        assertThat(score).isEqualTo("Fifteen Love");
     }
 
-    @Test
-    public void should_return_30_0_when_player1_score_twice() {
-        WealTennis wealTennis = new WealTennis();
-        wealTennis.scorePlayer1();
-        wealTennis.scorePlayer1();
-        String score = wealTennis.score();
+    @Nested
+    class BothPlayersScoreSomePoints {
 
-        assertThat(score).isEqualTo("Thirty Love");
+        @Test
+        void shouldReportTheGameScore() {
+            assertScore(() -> {
+                hitP1(1);
+                hitP2(1);
+            }, "Fifteen All");
+            assertScore(() -> {
+                hitP1(2);
+                hitP2(1);
+            }, "Thirty Fifteen");
+            assertScore(() -> {
+                hitP1(3);
+                hitP2(3);
+            }, "Deuce");
+            assertScore(() -> {
+                hitP1(4);
+                hitP2(3);
+            }, "Advantage Forty");
+            assertScore(() -> {
+                hitP1(4);
+                hitP2(4);
+            }, "Deuce");
+            assertScore(() -> {
+                hitP1(3);
+                hitP2(4);
+            }, "Forty Advantage");
+        }
+
+    }
+
+    private void assertScore(Runnable hitsFn, String expected) {
+        hitsFn.run();
+        assertThat(wealTennis.score()).isEqualTo(expected);
+        wealTennis = new WealTennis();
+    }
+
+    private void hit(String playerName, int times) {
+        for (int i = 0; i < times; i++)
+            wealTennis.hitWinningPoints(playerName);
+    }
+
+    private void hitP1(int times) {
+        hit("Player1", times);
+    }
+
+    private void hitP2(int times) {
+        hit("Player2", times);
     }
 }
