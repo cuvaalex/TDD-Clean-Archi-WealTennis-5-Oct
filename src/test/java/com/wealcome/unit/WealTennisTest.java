@@ -17,9 +17,20 @@ public class WealTennisTest {
     // 40 15    Forty Fifteen
     // Won
 
+
     @Test
     void startTheGameWithDefaultScore() {
         assertThat(new WealTennis().score()).isEqualTo("Love All");
     }
 
+
+
+    @Test
+    public void should_return_15_0_when_player1_score_once() {
+        WealTennis wealTennis = new WealTennis();
+        wealTennis.scorePlayer1();
+        String score = wealTennis.score();
+
+        assertThat(score).isEqualTo("Fifteen Love");
+    }
 }
