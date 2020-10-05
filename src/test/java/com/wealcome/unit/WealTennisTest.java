@@ -58,6 +58,11 @@ public class WealTennisTest {
                 hitP1(3);
                 hitP2(4);
             }, "Forty Advantage");
+            assertScore(() -> {
+                hitP1(3);
+                hitP2(4);
+                hitP2(1);
+            }, "Won!");
         }
 
     }
