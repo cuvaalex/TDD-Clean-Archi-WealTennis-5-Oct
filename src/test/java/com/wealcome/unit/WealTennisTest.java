@@ -1,6 +1,9 @@
-package com.wealcome;
+package com.wealcome.unit;
 
+import com.wealcome.WealTennis;
 import org.junit.jupiter.api.Test;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class WealTennisTest {
 
@@ -15,8 +18,8 @@ public class WealTennisTest {
     // Won
 
     @Test
-    void doNothing() {
-
+    void startTheGameWithDefaultScore() {
+        assertThat(new WealTennis().score()).isEqualTo("Love All");
     }
 
 }
