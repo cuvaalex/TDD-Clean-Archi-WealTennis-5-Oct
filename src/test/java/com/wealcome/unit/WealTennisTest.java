@@ -11,6 +11,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class WealTennisTest {
 
     private TennisScore tennisScore = new TennisScore();
+    private TennisScoreRepository tennisScoreRepository = new InMemoryTennisScoreRepository();
     private WealTennis wealTennis = new WealTennis(tennisScore);
 
     @Test
