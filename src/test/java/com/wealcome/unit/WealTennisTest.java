@@ -10,7 +10,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class WealTennisTest {
 
-    private TennisScore tennisScore = new TennisScore(LOVE, LOVE);
+    private TennisScore tennisScore = new TennisScore();
     private WealTennis wealTennis = new WealTennis(tennisScore);
 
     @Test
@@ -73,7 +73,7 @@ public class WealTennisTest {
     private void assertScore(Runnable hitsFn, TennisScore expected) {
         hitsFn.run();
         assertThat(tennisScore).isEqualTo(expected);
-        tennisScore = new TennisScore(LOVE, LOVE);
+        tennisScore = new TennisScore();
         wealTennis = new WealTennis(tennisScore);
     }
 

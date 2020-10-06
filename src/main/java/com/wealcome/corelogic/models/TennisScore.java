@@ -11,6 +11,11 @@ public class TennisScore {
     private ScoreEnum scorePlayer2;
     private final ScoreEnum[] orderedScore = {LOVE, FIFTEEN, THIRTY, FORTY, ADVANTAGE};
 
+    public TennisScore() {
+        this.scorePlayer1 = LOVE;
+        this.scorePlayer2 = LOVE;
+    }
+
     public TennisScore(ScoreEnum scorePlayer1, ScoreEnum scorePlayer2) {
         this.scorePlayer1 = scorePlayer1;
         this.scorePlayer2 = scorePlayer2;
