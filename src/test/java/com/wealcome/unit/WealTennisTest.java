@@ -1,19 +1,22 @@
 package com.wealcome.unit;
 
-import com.wealcome.WealTennis;
+import com.wealcome.corelogic.models.TennisScore;
+import com.wealcome.corelogic.usecases.WealTennis;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
+import static com.wealcome.corelogic.models.ScoreEnum.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class WealTennisTest {
 
-    private WealTennis wealTennis = new WealTennis();
+    private TennisScore tennisScore = new TennisScore(LOVE, LOVE);
+    private WealTennis wealTennis = new WealTennis(tennisScore);
 
     @Test
     void startTheGameWithDefaultScore() {
         assertScore(() -> {
-        }, "Love All");
+        }, new TennisScore(LOVE, LOVE));
     }
 
     @Nested
@@ -21,10 +24,10 @@ public class WealTennisTest {
 
         @Test
         void shouldReportTheGameScore() {
-            assertScore(() -> hitP1(1), "Fifteen Love");
-            assertScore(() -> hitP1(2), "Thirty Love");
-            assertScore(() -> hitP1(3), "Forty Love");
-            assertScore(() -> hitP1(4), "Won!");
+            assertScore(() -> hitP1(1), new TennisScore(FIFTEEN, LOVE));
+            assertScore(() -> hitP1(2), new TennisScore(THIRTY, LOVE));
+            assertScore(() -> hitP1(3), new TennisScore(FORTY, LOVE));
+            assertScore(() -> hitP1(4), new TennisScore(WON, LOVE));
         }
 
     }
@@ -37,40 +40,41 @@ public class WealTennisTest {
             assertScore(() -> {
                 hitP1(1);
                 hitP2(1);
-            }, "Fifteen All");
+            }, new TennisScore(FIFTEEN, FIFTEEN));
             assertScore(() -> {
                 hitP1(2);
                 hitP2(1);
-            }, "Thirty Fifteen");
+            }, new TennisScore(THIRTY, FIFTEEN));
             assertScore(() -> {
                 hitP1(3);
                 hitP2(3);
-            }, "Deuce");
+            }, new TennisScore(FORTY, FORTY));
             assertScore(() -> {
                 hitP1(4);
                 hitP2(3);
-            }, "Advantage Forty");
+            }, new TennisScore(ADVANTAGE, FORTY));
             assertScore(() -> {
                 hitP1(4);
                 hitP2(4);
-            }, "Deuce");
+            }, new TennisScore(FORTY, FORTY));
             assertScore(() -> {
                 hitP1(3);
                 hitP2(4);
-            }, "Forty Advantage");
+            }, new TennisScore(FORTY, ADVANTAGE));
             assertScore(() -> {
                 hitP1(3);
                 hitP2(4);
                 hitP2(1);
-            }, "Won!");
+            }, new TennisScore(FORTY, WON));
         }
 
     }
 
-    private void assertScore(Runnable hitsFn, String expected) {
+    private void assertScore(Runnable hitsFn, TennisScore expected) {
         hitsFn.run();
-        assertThat(wealTennis.score()).isEqualTo(expected);
-        wealTennis = new WealTennis();
+        assertThat(tennisScore).isEqualTo(expected);
+        tennisScore = new TennisScore(LOVE, LOVE);
+        wealTennis = new WealTennis(tennisScore);
     }
 
     private void hit(String playerName, int times) {
